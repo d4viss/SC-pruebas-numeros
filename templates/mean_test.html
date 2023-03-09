@@ -1,0 +1,43 @@
+{% extends './layout.html' %}
+
+{% block title %} Prueba de medias {% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/mean_test.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="container py-3">
+    <h1>Prueba de Medias</h1>
+
+    <button id="open">
+        Ingresar Datos
+    </button>
+</div>
+
+<div id="modal_container" class="modal-container">
+    <div class="modale">
+        <h1>Ingrese los parámetros de entrada</h1>
+        <form method="POST" action="{{ url_for('setAtributesMeanTest') }}">
+
+            <div class="mb-3">
+                <label for="acept" class="form-label">Aceptación</label>
+                <input type="number" min="0" max="100" value="95" step="1" id="acept" name="acept" aria-describedby="Nivel de aceptación" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="acept" class="form-label">Error de aceptación</label>
+                <input type="number" min="0" max="100" value="5" step="1" id="error" name="error" aria-describedby="Error aceptado" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="number_n" class="form-label">Número de números pseudo-aleatorios</label>
+                <input type="number" min="0" max="1000" value="50" step="1" id="number_n" name="number_n" aria-describedby="Número de números pseudo-aleatorios" class="form-control">
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="close">Enviar</button>
+
+        </form>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/meanTest.js') }}"></script>
+{% endblock %}
