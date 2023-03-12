@@ -13,10 +13,8 @@ def meanTest():
 
 @app.route('/mean_test', methods=["POST"])
 def setAtributesMeanTest():
-    meanTestClass = MeanTest.MeanTest(request.form['acept'], request.form['error'], request.form['number_n'])
-    meanTestClass.printValues()
-    print(meanTestClass.calculateMean())
-    return render_template('mean_test.html')
+    meanTestClass = MeanTest.MeanTest(request.form['acept'], request.form['seed'], request.form['number_n'])
+    return render_template('mean_test.html', randomNumbers=meanTestClass.randomNumbers, acept=meanTestClass.acept, error=meanTestClass.error, n=meanTestClass.numberN, r=meanTestClass.calculateMean(), alpha=meanTestClass.alpha, z=meanTestClass.z, li=meanTestClass.calculateLI(), ls=meanTestClass.calculateLS(), verify=meanTestClass.verifyTest())
 
 @app.route('/variance_test')
 def varianceTest():

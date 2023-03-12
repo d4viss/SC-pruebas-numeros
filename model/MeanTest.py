@@ -1,33 +1,29 @@
-import random, statistics
+import math
+from model import Utilities
 
 class MeanTest:
 
-    def __init__(self, acept, error, numberN):
-        self.acept = acept
-        self.error = error
-        self.numberN = numberN
-
-    def generateNumbers(self):
-        randomNumbers = []
-        j = int(self.numberN)
-        for i in range(j):
-            randomNumbers.append(float(random.random()))
-        return randomNumbers
+    def __init__(self, acept, seed, numberN):
+        self.acept = int(acept)
+        self.error = 100 - self.acept
+        self.numberN = int(numberN)
+        self.seed = seed
+        self.alpha = Utilities.calculateAlpha(self.error)
+        self.z = Utilities.calculateDisNormEstInv(self.alpha)
+        self.randomNumbers = Utilities.generateNumbers(self.seed, self.numberN)
     
     def calculateMean(self):
-        randomNumbers = self.generateNumbers()
-        mean = statistics.mean(randomNumbers)
-        return mean
+        return Utilities.calculateMean(self.randomNumbers)
     
-    def calculateAlpha(self):
-        error = float(self.error)
-        alpha = 1-(error/2)
-        return alpha
+    def calculateLI(self):
+        return float(1/2-self.z *(1/(math.sqrt(12*self.numberN))))
     
-    def calculateDisNormEstInv(self):
-        alpha = self.calculateAlpha()
-        dist = statistics.NormalDist.inv_cdf(alpha)
-        return dist
-
-    def printValues(self):
-        print(self.acept, self.error, self.numberN)
+    def calculateLS(self):
+        return float(1/2+self.z *(1/(math.sqrt(12*self.numberN))))
+    
+    def verifyTest(self):
+        mean = self.calculateMean() 
+        if mean >= self.calculateLI() and mean <= self.calculateLS():
+            return True
+        else:
+            return False
