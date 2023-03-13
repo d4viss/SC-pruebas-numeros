@@ -1,31 +1,39 @@
-import random, statistics
+import statistics
+import matplotlib.pyplot as plt
+from io import BytesIO
+
 
 def calculateMean(randomNumbers):
-        mean = statistics.mean(randomNumbers)
-        return mean
+    mean = statistics.mean(randomNumbers)
+    return round(mean, 5)
+
 
 def calculateAlpha(error):
-        error = float(error) / 100
-        alpha = 1-(error/2)
-        return alpha
+    error = float(error) / 100
+    alpha = 1-(error/2)
+    return round(alpha, 5)
+
 
 def calculateDisNormEstInv(alpha):
-        dist = statistics.NormalDist(0, 1)
-        return dist.inv_cdf(float(alpha))
+    dist = statistics.NormalDist(0, 1)
+    return round(dist.inv_cdf(float(alpha)), 5)
 
-def generateNumbers(seed, iterations):
-    iterations = int(iterations)
-    seed_extension = len(str(seed))
-    x_i = int(seed)
-    data = []
-    i = 0
-    while i < iterations:
-        x_i_square = pow(x_i, 2)
-        square_seed = str(x_i_square)
-        square_extension = len(square_seed)
-        primerc = (square_extension - seed_extension) / 2
-        extraction = square_seed[int(primerc):int(primerc + seed_extension)]
-        data.append(int(extraction) / pow(10, seed_extension))
-        x_i = int(extraction)
-        i += 1
-    return data
+
+def generateNumbers(fileRoute):
+    list = []
+    file = open(fileRoute, 'r')
+    reading = file.readlines()
+    for i in range(len(reading)):
+        str = reading[i].replace('/n', '')
+        list.append(float(str))
+    print(list)
+    return list
+
+
+def generateGrafic(data):
+    fig, ax = plt.subplots()
+    ax.hist(data, bins=50)
+    buffer = BytesIO()
+    fig.savefig(buffer, format='png')
+    buffer.seek(0)
+    return buffer
