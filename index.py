@@ -1,7 +1,12 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file
 from model import MeanTest
+from werkzeug.utils import secure_filename
+from os.path import join
+from os import getcwd
+import base64
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = "files"
 
 @app.route('/')
 def main():
@@ -13,10 +18,18 @@ def meanTest():
 
 @app.route('/mean_test', methods=["POST"])
 def setAtributesMeanTest():
-    meanTestClass = MeanTest.MeanTest(request.form['acept'], request.form['error'], request.form['number_n'])
-    meanTestClass.printValues()
-    print(meanTestClass.calculateMean())
-    return render_template('mean_test.html')
+    file = request.files['input-file']
+    fileRoute = secure_filename(file.filename)
+    file.save(join(app.config['UPLOAD_FOLDER'], fileRoute))
+
+    path = getcwd() + "/files/" + file.filename
+    print("ruta" + path)
+
+    meanTestClass = MeanTest.MeanTest(request.form['acept'], path)
+
+    encoded_img = base64.b64encode(meanTestClass.generateGrafic().read()).decode('utf-8')
+
+    return render_template('mean_test.html', randomNumbers=meanTestClass.randomNumbers, acept=meanTestClass.acept, error=meanTestClass.error, n=meanTestClass.numberN, r=meanTestClass.calculateMean(), alpha=meanTestClass.alpha, z=meanTestClass.z, li=meanTestClass.calculateLI(), ls=meanTestClass.calculateLS(), verify=meanTestClass.verifyTest(), grafic=encoded_img)
 
 @app.route('/variance_test')
 def varianceTest():
