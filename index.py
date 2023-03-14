@@ -3,12 +3,12 @@ from model import MeanTest
 from werkzeug.utils import secure_filename
 from os.path import join
 from os import getcwd, mkdir
-import errno
 import base64
 from model.variance_test import VarianceTest
 from model import constants
-pathFiles = getcwd() + "/files/"
 import csv
+
+pathFiles = getcwd() + "/files/"
 
 app = Flask(__name__)
 try:
@@ -16,7 +16,6 @@ try:
     app.config['UPLOAD_FOLDER'] = "files"
 except OSError:
     app.config['UPLOAD_FOLDER'] = "files"
-
 
 @app.route('/')
 def main():
