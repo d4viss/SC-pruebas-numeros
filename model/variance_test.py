@@ -2,7 +2,6 @@ import random
 import statistics
 from scipy.stats import chi2
 
-
 class VarianceTest:
     def __init__(self, ri_list):
         self.ri_list = ri_list
