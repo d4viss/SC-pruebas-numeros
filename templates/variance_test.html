@@ -3,7 +3,114 @@
 {% block title %} Prueba de Varianza {% endblock %}
 
 {% block body %}
-<div class="container py-3">
-    <h1>Prueba de Varianza</h1>
-</div>
+    <div class="container">
+        <h3>Prueba de varianza</h3>
+        <div class="row">
+            <div class="col-6">
+                <p>Aceptación: 95%</p>
+            </div>
+            <div class="col-6">
+                <p>Error (α): 5%</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <form method="POST" action="{{ url_for('set_numbers_in_variance_test') }}" enctype="multipart/form-data">
+                    {#                <input id="quantity" type="number" name="quantity" min="0">#}
+                    <input id="file" class="custom-file-input" type="file" name="file" required>
+                    <button class ="btn btn-success" id="submitBtn" type="submit" class="button-primary">
+                        Subir archivo
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <div id="table-div" style="overflow-y: scroll; height: 400px; width: 300px; padding-top: 10px;">
+                    <table class="table" >
+                        <thead class="table-primary table-bordered">
+                        <tr>
+                            <th scope="col">Números Ri</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for element in ri_list %}
+                            <tr>
+                                <td>{{ element }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-8">
+                <div id="table-results" style="padding-top: 10px;">
+                    <table class="table">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">n</th>
+                            <th scope="col">Promedio</th>
+                            <th scope="col">Varianza</th>
+                            <th scope="col">Alpha/2</th>
+                            <th scope="col">1-(Alpha/2)</th>
+                            <th scope="col">chi-inv-1</th>
+                            <th scope="col">chi-inv-2</th>
+                            <th scope="col">Límite inferior</th>
+                            <th scope="col">Límite superior</th>
+                        </tr>
+                        <tbody>
+                            {% set n = length %}
+                            {% set mean = mean %}
+                            {% set variance = variance %}
+                            {% set alpha_half = 0.05/2 %}
+                            {% set one_minus_alpha_half = 1 - alpha_half %}
+                            {% set chi_inv_1 = chi_inv1 %}
+                            {% set chi_inv_2 = chi_inv2 %}
+                            {% set lower_limit = lower_limit %}
+                            {% set upper_limit = upper_limit %}
+                            {% if n is defined %}
+                                <tr>
+                                    <td>
+                                        {{ n }}
+                                    </td>
+                                    <td>
+                                        {{ mean|round(5) }}
+                                    </td>
+                                    <td>
+                                        {{ variance|round(5) }}
+                                    </td>
+                                    <td>
+                                        {{ alpha_half|round(5)}}
+                                    </td>
+                                    <td>
+                                        {{ one_minus_alpha_half|round(5) }}
+                                    </td>
+                                    <td>
+                                        {{ chi_inv_1|round(5) }}
+                                    </td>
+                                    <td>
+                                        {{ chi_inv_2|round(5) }}
+                                    </td>
+                                    <td>
+                                        {{ lower_limit|round(5) }}
+                                    </td>
+                                    <td>
+                                        {{ upper_limit|round(5) }}
+                                    </td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </thead>
+                </table>
+                </div>
+                <label id="lbl_validation">Cumple:</label>
+                {% if is_valid %}
+                    <span id="span-result-true" class="badge bg-success">Verdadero</span>
+                {% else %}
+                    <span id="span-result-false" class="badge bg-danger">Falso</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/variance_test.js') }}"></script>
 {% endblock %}
