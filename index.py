@@ -2,11 +2,18 @@ from flask import Flask, render_template, request, send_file
 from model import MeanTest
 from werkzeug.utils import secure_filename
 from os.path import join
-from os import getcwd
+from os import getcwd, mkdir
+import errno
 import base64
 
+pathFiles = getcwd() + "/files/"
+
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = "files"
+try:
+    mkdir(pathFiles)
+    app.config['UPLOAD_FOLDER'] = "files"
+except OSError:
+    app.config['UPLOAD_FOLDER'] = "files"
 
 @app.route('/')
 def main():
@@ -23,8 +30,7 @@ def setAtributesMeanTest():
     file.save(join(app.config['UPLOAD_FOLDER'], fileRoute))
 
     path = getcwd() + "/files/" + file.filename
-    print("ruta" + path)
-
+    
     meanTestClass = MeanTest.MeanTest(request.form['acept'], path)
 
     encoded_img = base64.b64encode(meanTestClass.generateGrafic().read()).decode('utf-8')
