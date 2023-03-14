@@ -7,7 +7,6 @@ import errno
 import base64
 from model.variance_test import VarianceTest
 from model import constants
-from utilities import utilities
 pathFiles = getcwd() + "/files/"
 import csv
 
