@@ -71,7 +71,7 @@ class poker_test:
         ei = self.ei[i]
         ob_ei = self.ob_ei[i]
 
-        row.extend([set, constants.FORMAT_NUMBER.format(oi), constants.FORMAT_NUMBER.format(prob), constants.FORMAT_NUMBER.format(ei), constants.FORMAT_NUMBER.format(ob_ei)])
+        row.extend([set, oi, constants.FORMAT_NUMBER.format(prob), constants.FORMAT_NUMBER.format(ei), constants.FORMAT_NUMBER.format(ob_ei)])
         return row
     
     def gen_matrix(self):
