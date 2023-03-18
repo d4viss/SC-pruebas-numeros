@@ -2,21 +2,20 @@ import statistics
 import matplotlib.pyplot as plt
 from io import BytesIO
 
-
 def calculateMean(randomNumbers):
     mean = statistics.mean(randomNumbers)
-    return round(mean, 5)
+    return mean
 
 
 def calculateAlpha(error):
     error = float(error) / 100
     alpha = 1-(error/2)
-    return round(alpha, 5)
+    return alpha
 
 
 def calculateDisNormEstInv(alpha):
     dist = statistics.NormalDist(0, 1)
-    return round(dist.inv_cdf(float(alpha)), 5)
+    return dist.inv_cdf(float(alpha))
 
 
 def generateNumbers(fileRoute):
@@ -32,7 +31,7 @@ def generateNumbers(fileRoute):
 
 def generateGrafic(data):
     fig, ax = plt.subplots()
-    ax.hist(data, bins=50)
+    ax.hist(data, bins=10)
     buffer = BytesIO()
     fig.savefig(buffer, format='png')
     buffer.seek(0)
