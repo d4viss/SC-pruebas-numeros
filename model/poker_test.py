@@ -48,9 +48,8 @@ class poker_test:
 
     def gen_ei(self):
         list_ei = []
-        n = len(self.random_numbers)
         for i in range(len(self.list_prob)):
-            list_ei.append(self.list_prob[i] * n)
+            list_ei.append(self.list_prob[i] * self.number_n)
         return list_ei
 
     def gen_ob_ei(self):

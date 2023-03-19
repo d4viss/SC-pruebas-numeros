@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from model import MeanTest
 from model import poker_test
+from model import chi2_test
 from werkzeug.utils import secure_filename
 from os.path import join
 from os import getcwd, mkdir
@@ -89,6 +90,19 @@ def ksTest():
 def chiTest():
     return render_template('chi_test.html')
 
+@app.route('/chi_test', methods=["POST"])
+def set_atributes_chi_test():
+    file = request.files['input-file']
+    fileRoute = secure_filename(file.filename)
+    file.save(join(app.config['UPLOAD_FOLDER'], fileRoute))
+
+    path = getcwd() + "/files/" + file.filename
+    
+    poker_test_class = chi2_test.chi2_test(path)
+
+    encoded_img = base64.b64encode(poker_test_class.generateGrafic().read()).decode('utf-8')
+
+    return render_template('/chi_test.html', grafic=encoded_img, randomNumbers=poker_test_class.random_numbers, sum=constants.FORMAT_NUMBER.format(poker_test_class.sum), chi2=constants.FORMAT_NUMBER.format(poker_test_class.chi2), matrix=poker_test_class.matrix, verify=poker_test_class.verify())
 
 @app.route('/poker_test')
 def pokerTest():
@@ -105,7 +119,6 @@ def set_atributes_poker_test():
     poker_test_class = poker_test.poker_test(path)
 
     encoded_img = base64.b64encode(poker_test_class.generateGrafic().read()).decode('utf-8')
-
 
     return render_template('/poker_test.html', grafic=encoded_img, randomNumbers=poker_test_class.random_numbers, sum=constants.FORMAT_NUMBER.format(poker_test_class.sum), chi2=constants.FORMAT_NUMBER.format(poker_test_class.chi2), matrix=poker_test_class.matrix, verify=poker_test_class.verify())
 
