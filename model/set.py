@@ -7,7 +7,6 @@ class set():
         self.number = number
         self.set = self.gen_set()
         self.cat = self.gen_cat()
-        print(self.cat)
 
     def gen_set(self):
         str_num = str(self.number)
@@ -40,7 +39,6 @@ class set():
         for i in range(len(list_num)):
             count = list_num.count(list_num[i])
             list_repet.append(count)
-        print(list_repet)
         return list_repet
     
     def is_not(self, list_repet):

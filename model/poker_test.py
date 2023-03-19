@@ -44,14 +44,13 @@ class poker_test:
                 quan_sets[5] += 1
             if (i.cat == hand.FIVE_OF_A_KIND):
                 quan_sets[6] += 1
-
-        print(quan_sets)
         return quan_sets
 
     def gen_ei(self):
         list_ei = []
+        n = len(self.random_numbers)
         for i in range(len(self.list_prob)):
-            list_ei.append(self.list_prob[i] * 15)
+            list_ei.append(self.list_prob[i] * n)
         return list_ei
 
     def gen_ob_ei(self):
@@ -77,7 +76,6 @@ class poker_test:
     def gen_matrix(self):
         matrix = [[]]
         for i in range(len(self.ei)):
-            print("index: " + str(i))
             matrix.append(self.gen_list(i))
         return matrix
     
