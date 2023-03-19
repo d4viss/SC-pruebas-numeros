@@ -4,9 +4,9 @@ from persistence import persistence
 
 class MeanTest:
 
-    def __init__(self, acept, fileRoute):
-        self.acept = int(acept) /100
-        self.error = (100 - int(acept)) /100
+    def __init__(self, fileRoute):
+        self.acept = 95 /100
+        self.error = (100 - 95) /100
         self.alpha = Utilities.calculateAlpha(self.error)
         self.z = Utilities.calculateDisNormEstInv(self.alpha)
         self.randomNumbers = persistence.generateNumbers(fileRoute)

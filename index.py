@@ -38,7 +38,7 @@ def setAtributesMeanTest():
 
     path = getcwd() + "/files/" + file.filename
     
-    meanTestClass = MeanTest.MeanTest(request.form['acept'], path)
+    meanTestClass = MeanTest.MeanTest(path)
 
     encoded_img = base64.b64encode(meanTestClass.generateGrafic().read()).decode('utf-8')
 
