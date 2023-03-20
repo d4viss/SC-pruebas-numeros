@@ -1,12 +1,13 @@
 import math
 from model import Utilities
 from persistence import persistence
+from model import constants
 
 class MeanTest:
 
     def __init__(self, fileRoute):
-        self.acept = 95 /100
-        self.error = (100 - 95) /100
+        self.acept = 95
+        self.error = constants.ALPHA / 100
         self.alpha = Utilities.calculateAlpha(self.error)
         self.z = Utilities.calculateDisNormEstInv(self.alpha)
         self.randomNumbers = persistence.generateNumbers(fileRoute)

@@ -3,7 +3,6 @@ from persistence import persistence
 from scipy.stats import chi2
 from model import constants
 
-
 class chi2_test:
 
     def __init__(self, file_route):
