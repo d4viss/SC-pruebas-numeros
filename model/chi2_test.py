@@ -9,7 +9,6 @@ class chi2_test:
         self.random_numbers = persistence.generateNumbers(file_route)
         self.quan_intervals = self.generate_intervals()
         self.number_n = len(self.random_numbers)
-        self.prob = 10 / self.number_n
         self.list_intervals = ['0.0-0.1', '0.1-0.2', '0.2-0.3', '0.3-0.4', '0.4-0.5', '0.5-0.6', '0.6-0.7', '0.7-0.8', '0.8-0.9', '0.9-1']
         self.ei = self.number_n / 10
         self.ob_ei = self.gen_ob_ei()
@@ -55,11 +54,10 @@ class chi2_test:
 
         set = self.list_intervals[i]
         oi = self.quan_intervals[i]
-        prob = self.prob
         ei = self.ei
         ob_ei = self.ob_ei[i]
 
-        row.extend([set, oi, constants.FORMAT_NUMBER.format(prob), constants.FORMAT_NUMBER.format(ei), constants.FORMAT_NUMBER.format(ob_ei)])
+        row.extend([set, oi, constants.FORMAT_NUMBER.format(ei), constants.FORMAT_NUMBER.format(ob_ei)])
         return row
 
     def gen_matrix(self):
