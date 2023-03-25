@@ -1,7 +1,7 @@
-from enum import StrEnum
+from strenum import StrEnum
+
 
 class hand(StrEnum):
-
     HIGH_CARD = 'Todas diferentes'
     PAIR = 'Un par'
     TWO_PAIR = 'Doble par'
