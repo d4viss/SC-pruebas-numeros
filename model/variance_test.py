@@ -9,8 +9,8 @@ class VarianceTest:
         self.degrees_freedom = len(ri_list)-1
 
     def calculate_variables(self):
-        chi_inv1 = self.calculate_chi_inv(constants.ONE_MINUS_ALPHA_HALF)
-        chi_inv2 = self.calculate_chi_inv(constants.ALPHA_HALF)
+        chi_inv1 = self.calculate_chi_inv(constants.ALPHA_HALF)
+        chi_inv2 = self.calculate_chi_inv(constants.ONE_MINUS_ALPHA_HALF)
         lower_limit = self.calculate_limit(chi_inv1)
         upper_limit = self.calculate_limit(chi_inv2)
         variables = [chi_inv1, chi_inv2, lower_limit, upper_limit]
@@ -23,7 +23,7 @@ class VarianceTest:
         return statistics.variance(self.ri_list)
 
     def calculate_chi_inv(self, probability):
-        return chi2.ppf(probability, self.degrees_freedom)
+        return chi2.isf(probability, self.degrees_freedom)
 
     def calculate_limit(self, chi_inv):
         return chi_inv/(12 * self.degrees_freedom)
