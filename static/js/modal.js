@@ -1,6 +1,7 @@
 const open = document.getElementById('open');
 const modal_container = document.getElementById('modal_container');
 const close = document.getElementById('close');
+const close2 = document.getElementById('close2');
 
 const fileInput = document.getElementById('input-file');
 
@@ -9,6 +10,10 @@ open.addEventListener('click', () => {
 });
 
 close.addEventListener('click', () => {
+  modal_container.classList.remove('show');
+});
+
+close2.addEventListener('click', () => {
   modal_container.classList.remove('show');
 });
 

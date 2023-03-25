@@ -63,11 +63,11 @@
 
             {% if verify == True %}
             <div class="alert alert-success" role="alert">
-                La generación de números pseudo-aleatorios es correcta 😊😊😊😊
+                La generación de números pseudo-aleatorios es correcta 😊
             </div>
             {% else %}
             <div class="alert alert-danger" role="alert">
-                La generación de números pseudo-aleatorios es incorrecta 🤬🤬🤬🤬
+                La generación de números pseudo-aleatorios es incorrecta 🤬
             </div>
             {% endif %}
 
@@ -83,20 +83,14 @@
         <form method="POST" action="{{ url_for('setAtributesMeanTest') }}" enctype="multipart/form-data">
 
             <div class="mb-3">
-                <label for="acept" class="form-label">Aceptación</label>
-                <input type="number" min="0" max="100" value="95" step="1" id="acept" name="acept"
-                    aria-describedby="Nivel de aceptación" class="form-control">
-            </div>
-
-            <div class="mb-3">
                 <label for="input-file" class="form-label">Seleccionar datos</label>
                 <input type="file" id="input-file" name="input-file" class="form-control">
             </div>
 
+            <button class="btn btn-primary" id="close2">Cerrar</button>
             <button type="submit" class="btn btn-primary" id="close" disabled>Enviar</button>
-
         </form>
     </div>
 </div>
-<script src="{{ url_for('static', filename='js/meanTest.js') }}"></script>
+<script src="{{ url_for('static', filename='js/modal.js') }}"></script>
 {% endblock %}
