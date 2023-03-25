@@ -5,7 +5,8 @@ from os.path import join
 from os import getcwd, mkdir
 import base64
 from model.variance_test import VarianceTest
-from model import constants
+from model.k_smirnoff_test import KolmogorovSmirnovTest
+from model import constants, Utilities
 import csv
 
 pathFiles = getcwd() + "/files/"
@@ -50,37 +51,36 @@ def varianceTest():
 @app.route('/variance_test', methods=['POST'])
 def set_numbers_in_variance_test():
     file = request.files['file']
-    route = app.root_path+'/resources/variance_test/'
-    file.save(route+file.filename)
-    data_list = read_file(route, file)
-    variance_test = VarianceTest(data_list)
-    ri_list = variance_test.__getattribute__("ri_list")
-    length = len(ri_list)
-    mean = variance_test.calculate_variance()
+    ri_list = Utilities.get_ri_list(file, app.config['UPLOAD_FOLDER'])
+    variance_test = VarianceTest(ri_list)
+    ri_list = variance_test.ri_list
+    mean = variance_test.calculate_average()
     variance = variance_test.calculate_variance()
-    chi_inv1 = variance_test.calculate_chi_inv(constants.ALPHA_HALF)
-    chi_inv2 = variance_test.calculate_chi_inv(constants.ONE_MINUS_ALPHA_HALF)
-    lower_limit = variance_test.calculate_limit(True, chi_inv1)
-    upper_limit = variance_test.calculate_limit(False, chi_inv2)
-    is_valid = variance_test.is_valid_test(lower_limit, upper_limit, variance)
-    return render_template('variance_test.html', ri_list=ri_list, length=length, mean=mean, variance=variance, alpha_half=constants.ALPHA_HALF, chi_inv1=chi_inv1, chi_inv2=chi_inv2,lower_limit=lower_limit, upper_limit=upper_limit, is_valid = is_valid)
+    variables = variance_test.calculate_variables()
+    is_valid = variance_test.is_valid_test(variables[2], variables[3], variance)
+    encode_img = base64.b64encode(Utilities.generateGrafic(variance_test.ri_list).read()).decode('utf-8')
+    return render_template('variance_test.html', ri_list=ri_list, length=len(ri_list), mean=mean, variance=variance, variables=variables, is_valid=is_valid, grafic=encode_img)
 
-
-def read_file(route, file):
-    with open(route+file.filename, newline='') as file_csv:
-        data = csv.reader(file_csv)
-        data_list = []
-        for row in data:
-            data_row = []
-            for value in row:
-                if value != '':
-                    data_row.append(float(value.replace(',', '.')))
-            data_list = data_list + data_row
-        return data_list
 
 @app.route('/ks_test')
 def ksTest():
     return render_template('ks_test.html')
+
+
+@app.route('/ks_test', methods=['POST'])
+def set_attributes_ks_test():
+    file = request.files['file']
+    ri_list = Utilities.get_ri_list(file, app.config['UPLOAD_FOLDER'])
+    ks_test = KolmogorovSmirnovTest(ri_list, 0, 1)
+    ks_test.calculate_intervals()
+    freq_obt = ks_test.get_frequency_obt()
+    freq_obt_acc = ks_test.get_freq_obt_acc(freq_obt)
+    prob_obt = ks_test.get_prob_obt(freq_obt_acc)
+    exp_freq = ks_test.get_exp_freq_acc()
+    exp_prob = ks_test.get_exp_prob_acc(exp_freq)
+    diff_list = ks_test.get_abs_diff(prob_obt, exp_prob)
+    encode_img = base64.b64encode(Utilities.generateGrafic(ks_test.ri_list).read()).decode('utf-8')
+    return render_template('ks_test.html', ri_list=ri_list, initial=ks_test.initial_list, final=ks_test.final_list, freq_obt=freq_obt, freq_obt_acc=freq_obt_acc, prob_obt=prob_obt, exp_freq=exp_freq, exp_prob=exp_prob, diff_list=diff_list, diff=max(diff_list), max_diff_allow=ks_test.get_critic_value(), grafic=encode_img)
 
 
 @app.route('/chi_test')

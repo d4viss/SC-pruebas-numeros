@@ -1,6 +1,11 @@
 import statistics
+from os import getcwd
+from os.path import join
+
 import matplotlib.pyplot as plt
 from io import BytesIO
+
+from werkzeug.utils import secure_filename
 
 
 def calculateMean(randomNumbers):
@@ -10,7 +15,7 @@ def calculateMean(randomNumbers):
 
 def calculateAlpha(error):
     error = float(error) / 100
-    alpha = 1-(error/2)
+    alpha = 1 - (error / 2)
     return round(alpha, 5)
 
 
@@ -30,6 +35,16 @@ def generateNumbers(fileRoute):
     return list
 
 
+def read_file(path):
+    numbers = []
+    with open(path, 'r') as file:
+        reading = file.readlines()
+        for line in reading:
+            value = line.strip()
+            numbers.append(float(value))
+    return numbers
+
+
 def generateGrafic(data):
     fig, ax = plt.subplots()
     ax.hist(data, bins=50)
@@ -37,3 +52,11 @@ def generateGrafic(data):
     fig.savefig(buffer, format='png')
     buffer.seek(0)
     return buffer
+
+
+def get_ri_list(file, folder):
+    file_route = secure_filename(file.filename)
+    file.save(join(folder, file_route))
+    path = getcwd() + "/files/" + file.filename
+    ri_list = read_file(path)
+    return ri_list
