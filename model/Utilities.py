@@ -15,9 +15,6 @@ def calculateMean(randomNumbers):
 
 
 def calculateAlpha(error):
-    error = float(error) / 100
-    alpha = 1 - (error / 2)
-    return round(alpha, 5)
     alpha = 1-(error/2)
     return alpha
 
