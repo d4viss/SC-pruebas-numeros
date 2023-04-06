@@ -6,7 +6,7 @@ from model import constants
 class MeanTest:
 
     def __init__(self, fileRoute):
-        self.acept = 95
+        self.acept = constants.ACCEPT
         self.error = constants.ALPHA / 100
         self.alpha = Utilities.calculateAlpha(self.error)
         self.z = Utilities.calculateDisNormEstInv(self.alpha)
